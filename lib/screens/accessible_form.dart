@@ -14,6 +14,7 @@ class _AccessibleFormScreenState extends State<AccessibleFormScreen> {
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _addressController = TextEditingController(); // agregado
   
   bool _isLoading = false;
   double _fontSize = 16.0;
@@ -23,6 +24,7 @@ class _AccessibleFormScreenState extends State<AccessibleFormScreen> {
     _nameController.dispose();
     _emailController.dispose();
     _phoneController.dispose();
+    _addressController.dispose(); // agregado
     super.dispose();
   }
 
@@ -184,6 +186,34 @@ class _AccessibleFormScreenState extends State<AccessibleFormScreen> {
                 ),
                 
                 const SizedBox(height: 32),
+
+
+                Semantics(
+                  textField: true,
+                  label: 'Campo de dirección',
+                  hint: 'Ingrese su dirección completa',
+                  child: TextFormField(
+                    controller: _addressController,
+                    decoration: InputDecoration(
+                      labelText: 'Dirección',
+                      hintText: 'Calle, ciudad, país',
+                      prefixIcon: const Icon(Icons.location_on),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                    ),
+                    keyboardType: TextInputType.streetAddress,
+                    style: TextStyle(fontSize: _fontSize),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Por favor ingrese su dirección';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                
+                const SizedBox(height: 32),
                 
                 // Botón accesible personalizado con tooltip
                 Tooltip(
@@ -248,6 +278,7 @@ class _AccessibleFormScreenState extends State<AccessibleFormScreen> {
             _nameController.clear();
             _emailController.clear();
             _phoneController.clear();
+            _addressController.clear(); // agregado
             AccessibilityUtils.showAccessibleSnackBar(
               context, 
               'Formulario limpiado',
